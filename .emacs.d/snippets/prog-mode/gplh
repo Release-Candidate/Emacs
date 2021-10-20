@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# contributor: Release-Candidate <rec@gmx.at>
+# name: gpl3-license-header
+# key: gplh
+# --
+`(yas-trimmed-comment-start)` SPDX-License-Identifier: GPL-3.0-or-later`(unless (eq (length comment-end) 0) (concat " " (yas-trimmed-comment-end)))`
+`(yas-trimmed-comment-start)` Copyright (C) `(format-time-string "%Y")` YOUR NAME`(unless (eq (length comment-end) 0) (concat " " (yas-trimmed-comment-end)))`
+`(yas-trimmed-comment-start)``(unless (eq (length comment-end) 0) (concat " " (yas-trimmed-comment-end)))`
+`(yas-trimmed-comment-start)` Project: `(file-name-nondirectory (directory-file-name (projectile-acquire-root)))``(unless (eq (length comment-end) 0) (concat " " (yas-trimmed-comment-end)))`
+`(yas-trimmed-comment-start)` File:    `(file-name-nondirectory buffer-file-name)``(unless (eq (length comment-end) 0) (concat " " (yas-trimmed-comment-end)))`
+`(yas-trimmed-comment-start)` Date:    `(format-time-string "%d.%m.%Y")``(unless (eq (length comment-end) 0) (concat " " (yas-trimmed-comment-end)))`
+`(yas-trimmed-comment-start)`============================================================================`(unless (eq (length comment-end) 0) (concat " " (yas-trimmed-comment-end)))`
+$0
