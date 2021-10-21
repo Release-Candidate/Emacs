@@ -74,6 +74,7 @@
 (package-install-selected-packages)
 (require 'use-package)
 
+;; custom-set-variables saves it's values here
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -121,7 +122,7 @@
 
 (setq calendar-week-start-day 1
       calendar-day-name-array ["Nedeľa" "Pondelok" "Utorok" "Streda" "Štvrtok" "Piatok" "Sobota"]
-      calendar-day-abbrev-array ["Ne" "Po" "Ut" "Вт" "Ср" "Pi" "So"]
+      calendar-day-abbrev-array ["Ne" "Po" "Ut" "St" "Št" "Pi" "So"]
       calendar-day-header-array ["Ne" "Po" "Ut" "St" "Št" "Pi" "So"]
       calendar-month-name-array ["Január" "Február" "Marec" "Apríl" "Máj" "Jún" "Júl" "August" "September" "Október" "November" "December"])
 
@@ -150,8 +151,7 @@
         (holiday-fixed 11 17 "Deň boja za slobodu a demokraciu")
         (holiday-fixed 12 24 "Štedrý deň")
         (holiday-fixed 12 25 "Prvý sviatok vianočný")
-        (holiday-fixed 12 26 "Druhý sviatok vianočný")
-        (holiday-fixed 12 30 "Deň vyhlásenia Slovenska za samostatnú cirkevnú provinciu (pamätný deň)")))
+        (holiday-fixed 12 26 "Druhý sviatok vianočný")))
 
 
 ;;; Package Configurations
@@ -224,7 +224,7 @@
 ;;;;; C++ Mode
 (use-package c++-mode
   :hook
-  (c++-mode-hook . lsp))
+  (c++-mode . lsp))
 
 ;;;;; JS Mode
 (use-package js-mode
@@ -310,7 +310,7 @@
 (use-package markdown-toc
   :ensure t
   :hook
-  (markdown-mode-hook . markdown-toc-mode))
+  (markdown-mode . markdown-toc-mode))
 
 ;;;;; YAML Mode
 (use-package yaml-mode
@@ -364,6 +364,7 @@
 
 ;;;;;; Python Black formatter
 (use-package python-black
+  :ensure t
   :demand t
   :after python
   :hook
@@ -457,8 +458,8 @@
 (use-package magit
   :ensure t)
 
-;;;;;; Gitignore Mode
-(use-package gitignore-mode
+;;;;;; Git Modes - gitignore and similar files
+(use-package git-modes
   :ensure t)
 
 ;;;;; Org-Mode
@@ -548,6 +549,8 @@
              (flycheck-mode nil "flycheck")
              (flyspell-mode nil "flyspell")
              (lsp-lens-mode nil "lsp-lens")
+             (outline-minor-mode nil "outline")
+             (outshine-mode nil "outshine")
              (aggressive-indent-mode nil "aggressive-indent")
              (overwrite-mode " Ov" t))))
 
@@ -865,6 +868,7 @@
 
 ;;;; Set Themes per Buffer
 (use-package per-buffer-theme
+  :ensure t
   :init
   (per-buffer-theme-mode)
   :config
@@ -885,3 +889,4 @@
 (load "templates")
 
 ;;; Automatically Inserted
+;; custom-set-faces adds its values here
