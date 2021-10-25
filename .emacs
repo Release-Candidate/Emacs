@@ -15,6 +15,7 @@
 (global-set-key (kbd "C-n") nil)
 (global-set-key (kbd "C-p") nil)
 
+(global-set-key (kbd "TAB") #'company-indent-or-complete-common)
 
 (global-set-key (kbd "H-+") 'delete-other-windows)
 (global-set-key (kbd "H-é") 'delete-window)
@@ -98,9 +99,8 @@
   (show-paren-mode t)
   (transient-mark-mode 1)
   (setq column-number-mode t)
-  (when (display-graphic-p)
-    (tool-bar-mode 0)
-    (scroll-bar-mode 0))
+  (tool-bar-mode 0)
+  (scroll-bar-mode 0)
   ;; remove menu
   ;; (menu-bar-mode 0)
   (setq inhibit-startup-screen t)
@@ -172,7 +172,9 @@
   (setq lsp-idle-delay 0.500)
 
   ;; if you want to change prefix for lsp-mode keybindings.
-  (setq lsp-keymap-prefix "C-l"))
+  (setq lsp-keymap-prefix "C-l")
+  :custom-face
+  (lsp-lens-face ((t (:inherit lsp-details-face :foreground "slate gray")))))
 
 
 (use-package lsp-ui
@@ -285,8 +287,12 @@
   :commands
   (markdown-mode gfm-mode)
   :hook
+  (markdown-mode . (lambda () (add-hook 'before-save-hook 'markdown-cleanup-list-numbers nil 'local)))
+  (markdown-mode . (lambda () (add-hook 'before-save-hook 'markdown-toc-refresh-toc nil 'local)))
   (markdown-mode . lsp)
   (gfm-mode . lsp)
+  (gfm-mode . (lambda () (add-hook 'before-save-hook 'markdown-cleanup-list-numbers nil 'local)))
+  (gfm-mode . (lambda () (add-hook 'before-save-hook 'markdown-toc-refresh-toc nil 'local)))
   (markdown-mode . (lambda ()
                      (face-remap-add-relative 'default :family "Liberation Sans")))
   :mode
@@ -297,6 +303,9 @@
   (setq markdown-command "pandoc")
   (progn
     (setq markdown-indent-on-enter 'indent-and-new-item))
+  :config
+  (setq markdown-enable-wiki-links t)
+  (setq markdown-wiki-link-search-subdirectories t)
   :custom-face
   (markdown-code-face ((t (:inherit fixed-pitch :family "Cascadia Code PL"))))
   (markdown-header-face ((t (:inherit font-lock-function-name-face :weight bold))))
@@ -312,6 +321,15 @@
   :hook
   (markdown-mode . markdown-toc-mode))
 
+;;;;;; Imenu-List
+(use-package imenu-list
+  :ensure t
+  ;;:hook
+  ;; (markdown-mode . imenu-list)
+  ;; (gfm-mode . imenu-list)
+  )
+
+
 ;;;;; YAML Mode
 (use-package yaml-mode
   :ensure t
@@ -326,13 +344,26 @@
 (use-package toml-mode
   :ensure t)
 
-;;;;; Clojure Mode
+;;;;; Clojure Mode - no LSP, because Cider-Autocomplete doesn't work
 (use-package clojure-mode
   :ensure t
+  :config
+  (cljr-add-keybindings-with-prefix "C-c C-e")
+  (require 'flycheck-clj-kondo)
   :hook
-  ((clojure-mode . lsp)
-   (clojurescript-mode . lsp)
+  ((clojure-mode . clj-refactor-mode)
+   (clojurescript-mode . clj-refactor-mode)
+   (clojurec-mode . clj-refactor-mode)
+   (clojure-mode . flycheck-mode)
+   (clojurescript-mode . flycheck-mode)
+   (clojurec-mode . flycheck-mode)
+   ;;(clojure-mode . lsp)
+   ;;   (clojurescript-mode . lsp)
    (clojurec-mode . lsp)))
+
+;;;;;; Flycheck Clj-Kondo
+(use-package flycheck-clj-kondo
+  :ensure t)
 
 ;;;;;; Clojure REPL
 (use-package cider
@@ -492,7 +523,8 @@
    '(symon-current-time-monitor
      symon-windows-memory-monitor
      symon-windows-cpu-monitor))
-  (symon-mode t))
+  ;;(symon-mode t) don't autostart!
+  )
 
 ;;;;; Fast Yasnippets
 (use-package auto-yasnippet
@@ -763,7 +795,8 @@
 (when (eq system-type 'windows-nt)
   (set-face-attribute 'default nil
                       :font "Cascadia Code PL"
-                      :weight 'normal))
+                      :weight 'normal)
+  (add-to-list 'default-frame-alist `(font . "Cascadia Code PL")))
 
 (dolist (ft (fontset-list))
   (when (eq system-type 'windows-nt)
@@ -877,7 +910,7 @@
   (setq per-buffer-theme/default-theme 'doom-zenburn)
   (setq per-buffer-theme/themes-alist
         '(((:theme . notheme)
-           (:buffernames nil)
+           (:buffernames  "Ilist")
            (:modes org-mode gfm-mode markdown-mode coq-mode proof-mode)))))
 
 

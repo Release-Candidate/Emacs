@@ -1,17 +1,24 @@
-# Emacs <!-- omit in toc -->
+# Emacs
 
 My *modern* ;) Emacs configuration. Uses use-package to configure the packages, and LSP for most programming modes, works under Linux and Windows. Uses keybindings for a slovak keyboard layout and sets a slovak calendar.
 
-- [Files](#files)
-- [Usage](#usage)
-  - [Hyper Key](#hyper-key)
-  - [Coq configuration under Windows](#coq-configuration-under-windows)
-  - [Hunspell](#hunspell)
-  - [Installation of LSPs, formatters and linters](#installation-of-lsps-formatters-and-linters)
-  - [Vterm](#vterm)
-- [License](#license)
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
 
-![](emacs_screenshot.png)
+- [Emacs](#emacs)
+    - [Files](#files)
+    - [Usage](#usage)
+        - [Hyper Key](#hyper-key)
+        - [Coq configuration under Windows](#coq-configuration-under-windows)
+        - [Hunspell](#hunspell)
+        - [Installation of LSPs, formatters and linters](#installation-of-lsps-formatters-and-linters)
+        - [Vterm](#vterm)
+    - [License](#license)
+
+<!-- markdown-toc end -->
+
+
+![](./emacs_screenshot.png)
 Theme ist `doom-zenburn`, mode-line is `doom-modeline` and the treeview on the left is `dired-sidebar`. Outline in the `.emacs` Elisp file is by `outshine`, syntax highlighting uses `tree-sitter`, `rainbow-identifiers` and `rainbow-delimeters`. Time, memory and CPU usage displayed by `symon`.
 
 ## Files
@@ -145,6 +152,12 @@ All are installed globally, so you have to be root, administrator or use `sudo`.
 
     ```shell
     npm install -g markdownlint-cli
+    ```
+    
+- CLJ-Kondo
+
+    ```shell
+    npm install -g clj-kondo
     ```
 
 ### Vterm
