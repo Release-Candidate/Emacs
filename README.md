@@ -9,6 +9,7 @@ My *modern* ;) Emacs configuration. Uses use-package to configure the packages, 
     - [Files](#files)
     - [Usage](#usage)
         - [Hyper Key](#hyper-key)
+        - [Fonts](#fonts)
         - [Coq configuration under Windows](#coq-configuration-under-windows)
         - [Hunspell](#hunspell)
         - [Installation of LSPs, formatters and linters](#installation-of-lsps-formatters-and-linters)
@@ -65,6 +66,16 @@ Edit `~/.xmodmaprc` like the following:
 `135` is the keycode you get by calling `xev` and pressing the key.
 `Mod4` contains `Hyper` too, so you have to remove Hyper from `Mod4` and add it to the empty `Mod3`. Check that by calling `xmodmap`.
 
+
+### Fonts
+
+Uses `Cascadia Code PL` as mono spaced font and `STIX Two Math` for special math characters like `∀` or `ℕ` (in Coq mode).
+You can download these free fonts from their GitHub Releases:
+- [Cascadia Code Download](https://github.com/microsoft/cascadia-code/releases/latest)
+- [Stix Two Fonts Download](https://github.com/stipub/stixfonts/releases/latest)
+
+Download both Zip-files, unzip them and install the TTF fonts for your OS, normally by right-clicking and selecting `Install` or `Install for All Users (Administrator)`.
+From the Stix package you only need to install `/fonts/static_ttf/STIXTwoMath-Regular.ttf`, from Cascadia the `ttf/CascadiaCodePL*.ttf` files
 
 ### Coq configuration under Windows
 
@@ -153,7 +164,7 @@ All are installed globally, so you have to be root, administrator or use `sudo`.
     ```shell
     npm install -g markdownlint-cli
     ```
-    
+
 - CLJ-Kondo
 
     ```shell

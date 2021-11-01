@@ -24,6 +24,7 @@
 
 (global-set-key (kbd "H-m") 'magit-status)
 (global-set-key (kbd "H-g") 'goto-line-preview)
+(global-set-key (kbd "H-i") 'imenu-list)
 (global-set-key (kbd "H-j") 'avy-goto-word-or-subword-1)
 (global-set-key (kbd "H-k") 'ace-window)
 (global-set-key (kbd "H-u") 'undo-tree-visualize)
@@ -81,13 +82,30 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(use-package)))
+ '(exwm-floating-border-color "#262626")
+ '(fci-rule-color "#4F4F4F")
+ '(highlight-tail-colors ((("#454845") . 0) (("#474f4f") . 20)))
+ '(jdee-db-active-breakpoint-face-colors (cons "#000000" "#8CD0D3"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#000000" "#7F9F7F"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#000000" "#494949"))
+ '(objed-cursor-color "#CC9393")
+ '(outline-toc-mode t nil nil "Customized with use-package outshine")
+ '(package-selected-packages '(use-package))
+ '(pdf-view-midnight-colors (cons "#DCDCDC" "#3F3F3F"))
+ '(rustic-ansi-faces
+   ["#3F3F3F" "#CC9393" "#7F9F7F" "#F0DFAF" "#8CD0D3" "#DC8CC3" "#93E0E3" "#DCDCDC"])
+ '(safe-local-variable-values
+   '((flycheck-checker quote markdown-markdownlint-cli)
+     (flycheck-checker function markdown-markdownlint-cli)
+     (cider-shadow-watched-builds "frontend")
+     (cider-shadow-default-options . "frontend")
+     (cider-default-cljs-repl . shadow))))
 
 ;;; Global Settings
 
 (use-package emacs
   :init
-  (add-hook 'before-save-hook 'my-prog-nuke-trailing-whitespace)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
   (add-hook 'after-save-hook
             'executable-make-buffer-file-executable-if-script-p)
   :config
@@ -113,10 +131,6 @@
   (display-time-24hr-format t)
   (display-time-default-load-average nil)
   (display-time-mode nil))
-
-(defun my-prog-nuke-trailing-whitespace ()
-  (when (derived-mode-p 'prog-mode)
-    (delete-trailing-whitespace)))
 
 ;;;; Calendar
 
@@ -213,6 +227,12 @@
 
 ;;;; Programming Languages
 
+;;;; DocString Mode
+(use-package docstr
+  :ensure t
+  :config
+  (setq docstr-key-support t))
+
 ;;;;; Bash Mode / Shell Mode
 (use-package sh-mode
   :hook
@@ -231,7 +251,8 @@
 ;;;;; JS Mode
 (use-package js-mode
   :hook
-  (js-mode . lsp))
+  (js-mode . lsp)
+  (js-mode . (lambda () (docstr-mode 1))))
 
 (eval-after-load 'js-mode
   '(progn
@@ -242,7 +263,8 @@
 (use-package typescript-mode
   :ensure t
   :hook
-  (typescript-mode . lsp))
+  (typescript-mode . lsp)
+  (typescript-mode . (lambda () (docstr-mode 1))))
 
 (eval-after-load 'typescript-mode
   '(progn
@@ -367,7 +389,10 @@
 
 ;;;;;; Clojure REPL
 (use-package cider
-  :ensure t)
+  :ensure t
+  :hook
+  (cider-repl-mode . cider-company-enable-fuzzy-completion)
+  (cider-mode . cider-company-enable-fuzzy-completion))
 
 ;;;;; F# Mode
 (use-package fsharp-mode
@@ -379,7 +404,8 @@
 (use-package python-mode
   :ensure t
   :hook
-  (python-mode . lsp))
+  (python-mode . lsp)
+  (python-mode . electric-pair-mode))
 
 ;;;;;; Python LSP - Pyright
 (use-package lsp-pyright
@@ -400,6 +426,12 @@
   :after python
   :hook
   (python-mode . python-black-on-save-mode))
+
+;;;;; Numpy Style comments
+(use-package numpydoc
+  :ensure t
+  :bind (:map python-mode-map
+              ("H-d" . numpydoc-generate)))
 
 ;;;;; Coq Mode
 (use-package company-coq
@@ -506,6 +538,8 @@
 ;;;;; Outshine Mode - better Outline Mode
 (use-package outshine
   :ensure t
+  :custom
+  (outline-toc-mode t)
   :hook
   (prog-mode . outshine-mode)
   :custom-face
@@ -582,6 +616,7 @@
              (flyspell-mode nil "flyspell")
              (lsp-lens-mode nil "lsp-lens")
              (outline-minor-mode nil "outline")
+             (python-black-on-save-mode nil "python-black")
              (outshine-mode nil "outshine")
              (aggressive-indent-mode nil "aggressive-indent")
              (overwrite-mode " Ov" t))))
@@ -792,20 +827,16 @@
 
 ;;; Font Setup
 
-(when (eq system-type 'windows-nt)
-  (set-face-attribute 'default nil
-                      :font "Cascadia Code PL"
-                      :weight 'normal)
-  (add-to-list 'default-frame-alist `(font . "Cascadia Code PL")))
+(set-face-attribute 'default nil
+                    :font "Cascadia Code PL"
+                    :weight 'normal)
+(add-to-list 'default-frame-alist `(font . "Cascadia Code PL"))
 
 (dolist (ft (fontset-list))
-  (when (eq system-type 'windows-nt)
-    (set-fontset-font ft 'unicode (font-spec :name "Cascadia Code PL")))
+  (set-fontset-font ft 'unicode (font-spec :name "Cascadia Code PL"))
   (set-fontset-font ft 'unicode (font-spec :name "STIX Two Math") nil 'append))
 
-(if (eq system-type 'windows-nt)
-    (set-face-attribute 'default nil :height 120)
-  (set-face-attribute 'default nil :height 110))
+(set-face-attribute 'default nil :height 120)
 (set-face-attribute 'mode-line nil :height 100)
 
 ;;; Themes and Colors
