@@ -66,7 +66,6 @@ Edit `~/.xmodmaprc` like the following:
 `135` is the keycode you get by calling `xev` and pressing the key.
 `Mod4` contains `Hyper` too, so you have to remove Hyper from `Mod4` and add it to the empty `Mod3`. Check that by calling `xmodmap`.
 
-
 ### Fonts
 
 Uses `Cascadia Code PL` as mono spaced font and `STIX Two Math` for special math characters like `∀` or `ℕ` (in Coq mode).

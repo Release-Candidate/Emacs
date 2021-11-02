@@ -126,6 +126,7 @@
   (setq-default indent-tabs-mode nil)
   (delete-selection-mode 1)
   (setq-default show-trailing-whitespace t)
+  (advice-add 'risky-local-variable-p :override #'ignore)
   :custom
   (require-final-newline t)
   (display-time-24hr-format t)
@@ -202,15 +203,24 @@
 (use-package flycheck
   :ensure t
   :hook
+  ;;;;; Shell
   ((lsp-managed-mode . (lambda ()
                          (when (derived-mode-p 'sh-mode)
                            (setq my-flycheck-local-cache '((next-checkers . (sh-shellcheck)))))))
+   ;;;;; Markdown
    (lsp-managed-mode . (lambda ()
                          (when (derived-mode-p 'markdown-mode)
                            (setq my-flycheck-local-cache '((next-checkers . (markdown-markdownlint-cli)))))))
+   ;;;;; Javascript
    (lsp-managed-mode . (lambda ()
                          (when (derived-mode-p 'js-mode)
-                           (setq my-flycheck-local-cache '((next-checkers . (javascript-eslint)))))))))
+                           (setq my-flycheck-local-cache '((next-checkers . (javascript-eslint)))))))
+   ;;;;; Python
+   ;; set flake8 executable in .dir-locals.el
+   ;;((python-mode . ((flycheck-python-flake8-executable . "PATH/.virtualenvs/Obs2Org-YVMaTsrc/Scripts/flake8.exe"))))
+   (lsp-managed-mode . (lambda ()
+                         (when (derived-mode-p 'python-mode)
+                           (setq my-flycheck-local-cache '((next-checkers . (python-flake8)))))))))
 
 (advice-add 'flycheck-checker-get
             :around 'my-flycheck-local-checker-get)
@@ -304,6 +314,7 @@
   (json-mode . lsp))
 
 ;;;;; Markdown Mode / GitHub Formatted Markdown Mode
+
 (use-package markdown-mode
   :ensure t
   :commands
@@ -426,6 +437,14 @@
   :after python
   :hook
   (python-mode . python-black-on-save-mode))
+
+;;;;;; Python Isort
+;; set executable in .dir-locals.el, like
+;; ((python-mode . ((python-isort-command . "PATH/.virtualenvs/Obs2Org-YVMaTsrc/Scripts/isort.exe"))))
+(use-package python-isort
+  :ensure t
+  :hook
+  (python-mode . python-isort-on-save-mode))
 
 ;;;;; Numpy Style comments
 (use-package numpydoc
