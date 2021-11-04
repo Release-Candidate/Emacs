@@ -31,6 +31,7 @@
 (global-set-key (kbd "H-t") 'dired-sidebar-toggle-sidebar)
 (global-set-key (kbd "H-w") #'aya-create)
 (global-set-key (kbd "H-y") #'aya-expand)
+(global-set-key (kbd "H-r") 'lsp-rename)
 
 (global-set-key (kbd "H-<return>") (kbd "C-c C-c"))
 
