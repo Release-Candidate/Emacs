@@ -6,26 +6,25 @@ My *modern* ;) Emacs configuration. Uses use-package to configure the packages, 
 **Table of Contents**
 
 - [Emacs](#emacs)
-    - [Files](#files)
-    - [Usage](#usage)
-        - [Hyper Key](#hyper-key)
-        - [Fonts](#fonts)
-        - [Coq configuration under Windows](#coq-configuration-under-windows)
-        - [Hunspell](#hunspell)
-        - [Installation of LSPs, formatters and linters](#installation-of-lsps-formatters-and-linters)
-        - [Vterm](#vterm)
-    - [License](#license)
+  - [Files](#files)
+  - [Usage](#usage)
+    - [Hyper Key](#hyper-key)
+    - [Fonts](#fonts)
+    - [Coq configuration under Windows](#coq-configuration-under-windows)
+    - [Hunspell](#hunspell)
+    - [Installation of LSPs, formatters and linters](#installation-of-lsps-formatters-and-linters)
+    - [Vterm](#vterm)
+  - [License](#license)
 
 <!-- markdown-toc end -->
-
 
 ![](./emacs_screenshot.png)
 Theme ist `doom-zenburn`, mode-line is `doom-modeline` and the treeview on the left is `dired-sidebar`. Outline in the `.emacs` Elisp file is by `outshine`, syntax highlighting uses `tree-sitter`, `rainbow-identifiers` and `rainbow-delimeters`. Time, memory and CPU usage displayed by `symon`.
 
 ## Files
 
-- [~/.emacs](./.emacs) - The main Emacs configuration file
-- [~/./.emacs.d/config/templates.el](./.emacs.d/config/templates.el) - File with templates for new, empty files. Change `YOUR NAME` to your name.
+- [./.emacs](./.emacs) - The main Emacs configuration file
+- [./.emacs.d/config/templates.el](./.emacs.d/config/templates.el) - File with templates for new, empty files. Change `YOUR NAME` to your name.
 - [./.emacs.d/snippets/prog-mode/](./.emacs.d/snippets/prog-mode/) - YASnippets for all programming modes, so far only license headers. Change `YOUR NAME` to your name.
 
 ## Usage
@@ -58,11 +57,12 @@ Uses the *Windows App key* as Hyper key. No configuration except in `.emacs` nee
 
 Edit `~/.xmodmaprc` like the following:
 
-    ```shell
-    keycode 135 = Hyper_R
-    remove Mod4 = Hyper_L
-    add Mod3 = Hyper_L
-    ```
+```shell
+keycode 135 = Hyper_R
+remove Mod4 = Hyper_L
+add Mod3 = Hyper_L
+```
+
 `135` is the keycode you get by calling `xev` and pressing the key.
 `Mod4` contains `Hyper` too, so you have to remove Hyper from `Mod4` and add it to the empty `Mod3`. Check that by calling `xmodmap`.
 
@@ -70,6 +70,7 @@ Edit `~/.xmodmaprc` like the following:
 
 Uses `Cascadia Code PL` as mono spaced font and `STIX Two Math` for special math characters like `∀` or `ℕ` (in Coq mode).
 You can download these free fonts from their GitHub Releases:
+
 - [Cascadia Code Download](https://github.com/microsoft/cascadia-code/releases/latest)
 - [Stix Two Fonts Download](https://github.com/stipub/stixfonts/releases/latest)
 
@@ -150,7 +151,11 @@ All are installed globally, so you have to be root, administrator or use `sudo`.
     npm install -g pyright
     ```
 
-- Black: `pip install black`
+- Black:
+
+  ```shell
+  pip install black
+  ```
 
 - Prettier
 
